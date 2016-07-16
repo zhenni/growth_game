@@ -1,7 +1,7 @@
 package card;
 
 import java.util.*;
-//import org.json.simple.JSONObject;
+import org.json.simple.*;
 
 import player.*;
 
@@ -82,10 +82,7 @@ public class Card {
     public void setDescription(String description){
         this.description = this.description;
     }
-}
 
-
-/*
     public JSONObject generateJson(){
         JSONObject obj = new JSONObject();
         obj.put("ID", new Integer(getID()));
@@ -103,5 +100,7 @@ public class Card {
         obj.put("developTimes", new Integer(getDeltaTimes()[0]));
         obj.put("HPTimes", new Integer(getDeltaTimes()[1]));
         obj.put("GPTimes", new Integer(getDeltaTimes()[2]));
+
+        return obj;
     }
-}*/
+}
