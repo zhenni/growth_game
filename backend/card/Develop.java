@@ -6,10 +6,6 @@ import player.*;
 
 public class Develop extends Card {
 
-    public int getDevelop_value() {
-        return develop_value;
-    }
-
     public void setDevelop_value(int develop_value) {
         this.develop_value = develop_value;
     }

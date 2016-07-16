@@ -1,6 +1,7 @@
 package card;
 
 import java.util.*;
+import org.json.simple.JSONObject;
 
 import player.*;
 
@@ -64,9 +65,32 @@ public class Card {
         return name;
     }
 
+    public int getDevelop_value() {
+        return develop_value;
+    }
+
     public String toString(){
         return "Card";
     }
 
-    public void generateJson{}
+    public String getDiscription(){return ""}
+
+    public JSONObject generateJson{
+        JSONObject obj = new JSONObject();
+        obj.put("ID", new Integer(getID()));
+        obj.put("name", getName());
+        obj.put("description", getDiscription());
+
+        obj.put("hp", new Integer(getHp()));
+        obj.put("develop_value", new Integer(getDevelop_value()));
+        obj.put("CardToPlayer", new Integer(getCardToPlayer()) );
+
+        obj.put("developAdd", new Integer(getDeltaAdd()[0]));
+        obj.put("HPAdd", new Integer(getDeltaAdd()[1]));
+        obj.put("GPAdd", new Integer(getDeltaAdd()[2]));
+
+        obj.put("developTimes", new Integer(getDeltaTimes()[0]));
+        obj.put("HPTimes", new Integer(getDeltaTimes()[1]));
+        obj.put("GPTimes", new Integer(getDeltaTimes()[2]));
+    }
 }
