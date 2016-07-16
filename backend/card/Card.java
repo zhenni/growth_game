@@ -1,7 +1,7 @@
 package card;
 
 import java.util.*;
-import org.json.simple.JSONObject;
+//import org.json.simple.JSONObject;
 
 import player.*;
 
@@ -12,6 +12,7 @@ public class Card {
     protected double prob = 0;
 
     protected String name;
+    protected String description;
 
     protected int hp; // Decrease hp value of the player
     protected int[] deltaAdd = new int[3];  // [0] for develop, [1] for hp, [2] for gp
@@ -73,9 +74,18 @@ public class Card {
         return "Card";
     }
 
-    public String getDiscription(){return ""}
+    public String getDiscription(){
+        return description;
+    }
 
-    public JSONObject generateJson{
+    public void setDescription(String description){
+        this.description = this.description;
+    }
+}
+
+
+/*
+    public JSONObject generateJson(){
         JSONObject obj = new JSONObject();
         obj.put("ID", new Integer(getID()));
         obj.put("name", getName());
@@ -93,4 +103,4 @@ public class Card {
         obj.put("HPTimes", new Integer(getDeltaTimes()[1]));
         obj.put("GPTimes", new Integer(getDeltaTimes()[2]));
     }
-}
+}*/
