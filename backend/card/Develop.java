@@ -5,8 +5,18 @@ import java.util.*;
 import player.*;
 
 public class Develop extends Card {
-    private int develop_value = 0;
+    protected int develop_value = 0;
 
+    public int getDevelop_value() {
+        return develop_value;
+    }
 
-    public Develop(){}
+    public void setDevelop_value(int develop_value) {
+        this.develop_value = develop_value;
+    }
+
+    @Override
+    public String toString(){
+        return "Develop";
+    }
 }
