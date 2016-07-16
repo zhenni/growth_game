@@ -2,7 +2,10 @@ import java.util.*;
 import java.io.*;
 import java.lang.*;
 import java.math.*;
-import org.json.simple.*;
+//import org.json.simple.*;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import card.*;
 import player.*;
@@ -36,6 +39,45 @@ public class Main extends WebSocketClient {
     @Override
     public void onMessage( String message ) {
         System.out.println( "received: " + message );
+
+        try {
+            JSONParser parser = new JSONParser();
+            JSONObject json = (JSONObject) parser.parse(message);
+
+            String type = (String) json.get("type");
+            String content = (String) json.get("content");
+
+            // Check
+            System.out.println( "type: " + type );
+            System.out.println( "content: " + content);
+
+            String messageToSend;
+
+            switch (type){
+                case "initialize":
+                    messageToSend = initialize();
+                    break;
+                case "get_card":
+                    // exception?
+                    messageToSend = get_card(Integer.parseInt(content));
+                    break;
+                case "getHpAndGp":
+                    messageToSend = getHpAndGp(Integer.parseInt(content)));
+                    break;
+                case "postCard":
+                    messageToSend = postCard(Integer.parseInt(content));
+                    break;
+                case "choosePlayer":
+                    messageToSend = choosePlayer(Integer.parseInt(content));
+                    break;
+                case default:
+                    messageToSend = errorMessage();
+            }
+            send(messageToSend);
+        }
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     /*
@@ -61,4 +103,10 @@ public class Main extends WebSocketClient {
         c.connect();
     }
 
+
+    public String errorMessage(){
+        JSONObject obj = new JSONObject();
+        obj.put("type", "error");
+        return obj.toJSONString();
+    }
 }
