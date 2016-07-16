@@ -1,0 +1,19 @@
+{
+  "name": "front-end",
+  "version": "0.0.0",
+  "description": "A vue project.",
+  "private": true,
+  "keywords": [],
+  "scripts": {
+    "dev": "cooking watch",
+    "dist": "cooking build -p",
+    "deploy": "cooking build --no-color"
+  },
+  "author": "SkyAo",
+  "license": "ISC",
+  "dependencies": {
+    "socket.io-client": "^1.4.8",
+    "vue": "^1.0.0"
+  },
+  "devDependencies": {}
+}
