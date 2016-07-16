@@ -27,6 +27,7 @@ public class Player{
         ID = playerNum++;
     }
 
+/*
     public static void setInitGp(int initGp) {
         INIT_GP = initGp;
     }
@@ -38,6 +39,7 @@ public class Player{
     public static void setMaxNumCards(int maxNumCards) {
         MAX_NUM_CARDS = maxNumCards;
     }
+*/
 
     public int getID() {
         return ID;
@@ -55,7 +57,7 @@ public class Player{
         return gp;
     }
 
-    public vector<Card> getCards() {
+    public Vector<Card> getCards() {
         return cards;
     }
 
@@ -68,7 +70,7 @@ public class Player{
     }
 
     public boolean addCard(Card newcard){
-        if (cards.size > MAX_NUM_CARDS) return false;
+        if (cards.size() > MAX_NUM_CARDS) return false;
         cards.add(newcard);
         return true;
     }
