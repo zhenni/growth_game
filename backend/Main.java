@@ -62,7 +62,7 @@ public class Main extends WebSocketClient {
                     messageToSend = get_card(Integer.parseInt(content));
                     break;
                 case "getHpAndGp":
-                    messageToSend = getHpAndGp(Integer.parseInt(content)));
+                    messageToSend = getHpAndGp(Integer.parseInt(content));
                     break;
                 case "postCard":
                     messageToSend = postCard(Integer.parseInt(content));
@@ -70,7 +70,7 @@ public class Main extends WebSocketClient {
                 case "choosePlayer":
                     messageToSend = choosePlayer(Integer.parseInt(content));
                     break;
-                case default:
+                default:
                     messageToSend = errorMessage();
             }
             send(messageToSend);
@@ -109,4 +109,11 @@ public class Main extends WebSocketClient {
         obj.put("type", "error");
         return obj.toJSONString();
     }
+
+    // Just try
+    public String initialize(){return "{\"s\": \"s\"}";}
+    public String get_card(int x){return null;}
+    public String getHpAndGp(int x) {return null;}
+    public String postCard(int y) {return null;}
+    public String choosePlayer(int x) {return null;}
 }
