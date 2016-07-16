@@ -1,6 +1,9 @@
 package card;
 
 import java.util.*;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import org.json.simple.*;
 
 import player.*;
@@ -71,6 +74,14 @@ public class Card {
         return develop_value;
     }
 
+    public void setDevelop_type(int develop_type) {
+        this.develop_type = develop_type;
+    }
+
+    public int getDevelop_type() {
+        return develop_type;
+    }
+
     public String toString(){
         return "Card";
     }
@@ -91,6 +102,7 @@ public class Card {
 
         obj.put("hp", new Integer(getHp()));
         obj.put("develop_value", new Integer(getDevelop_value()));
+        obj.put("develop_type", new Integer(getDevelop_type()));
         obj.put("CardToPlayer", new Integer(getCardToPlayer()) );
 
         obj.put("developAdd", new Integer(getDeltaAdd()[0]));
@@ -100,6 +112,19 @@ public class Card {
         obj.put("developTimes", new Integer(getDeltaTimes()[0]));
         obj.put("HPTimes", new Integer(getDeltaTimes()[1]));
         obj.put("GPTimes", new Integer(getDeltaTimes()[2]));
+
+        try {
+
+            FileWriter file = new FileWriter("./test.json");
+            file.write(obj.toJSONString());
+            file.flush();
+            file.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        System.out.print(obj);
 
         return obj;
     }

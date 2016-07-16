@@ -13,7 +13,7 @@ wss.on('connection', function(_ws) {
   ws.on('message', function(message) {
     console.log('received: %s', message);
   });
-  ws.send('something');
+  ws.send('{"type": "initialize"}');
 })
 
 server.listen(3000);
