@@ -7,114 +7,58 @@ import org.json.simple.*;
 import card.*;
 import player.*;
 
-public class Main {
 
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import org.java_websocket.client.WebSocketClient;
+import org.java_websocket.drafts.Draft;
+import org.java_websocket.drafts.Draft_10;
+import org.java_websocket.framing.Framedata;
+import org.java_websocket.handshake.ServerHandshake;
+
+public class Main extends WebSocketClient {
+
+    public Main( URI serverUri , Draft draft ) {
+        super( serverUri, draft );
+    }
+
+    public Main( URI serverURI ) {
+        super( serverURI );
+    }
+
+    @Override
+    public void onOpen( ServerHandshake handshakedata ) {
+        System.out.println( "opened connection" );
+        // if you plan to refuse connection based on ip or httpfields overload: onWebsocketHandshakeReceivedAsClient
+    }
+
+    @Override
+    public void onMessage( String message ) {
+        System.out.println( "received: " + message );
+    }
 
     /*
-    public static Map toMap(String jsonString) throws JSONException {
-
-        JSONObject jsonObject = new JSONObject(jsonString);
-
-        Map result = new HashMap();
-        Iterator iterator = jsonObject.keys();
-        String key = null;
-        String value = null;
-
-        while (iterator.hasNext()) {
-
-            key = (String) iterator.next();
-            value = jsonObject.getString(key);
-            result.put(key, value);
-
-        }
-        return result;
-
-    }
-    public static String readFileByLines(String fileName) {
-        File file = new File(fileName);
-        BufferedReader reader = null;
-        String ret = "";
-        try {
-            reader = new BufferedReader(new FileReader(file));
-            String tempString = null;
-            while ((tempString = reader.readLine()) != null) {
-                ret += tempString;
-            }
-            System.out.println(ret);
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e1) {
-                }
-            }
-        }
-        return ret;
-    }*/
-/*
-    Vector<Card> cards;
-    Vector<Integer> card, person;
-    Player[] players = new Player[10];
-
-
-
-    Card getRandomCard() {
-        double tot = 0;
-        int sz = cards.size();
-        for(int i = 0; i < sz; i++){
-            tot += cards.get(i).getProb();
-        }
-        double tmp = Math.random() * tot;
-        for(int i = 0; i < sz; i++) {
-            if(tmp < cards.get(i).getProb()) return i;
-        }
-        return i;
-    }
-
-    void showCard() {
-        for(int i = 0; i < 4; ++i){
-            S
-        }
-    }
-
-    Boolean AskForDevelop (int index, int need) {
-        if(need == -1)
-            System.out.println("player" + index + "a develop card, please");
-        else
-            System.out.println("please " + index + "a needed tyoedevelop card, please" + need);
+    @Override
+    public void onFragment( Framedata fragment ) {
+        System.out.println( "received fragment: " + new String( fragment.getPayloadData().array() ) );
     }*/
 
-    public static void main(String[] args) {
-/*        int turn = 0;
-        while(1) {
-            {
-                int ok = 0;
-                for (int i = 0; i < 4; ++i) {
-                    if (players[i].getHp() > 0) {
-                        ok = 1;
-                    }
-                }
-                if (ok == 0) {
-                    int winner = 0;
-                    for (int i = 1; i < 4; ++i) {
-                        if (players[i].getGp() > players[winner].getGp())
-                            winner = i;
-                    }
-                    printf("palyer" + (i + 1) + "win the game with growth" + players[i].getGp() + ", Good Game !\n");
-                    return;
-                }
-            }
-            if (AskForDevelop(turn, -1)) {
-                for (int i = 1; i < 4; ++i) {
-                    AskFor
-                }
-            }
-            turn = (turn + 1) % 4;
-        }*/
-        return;
+    @Override
+    public void onClose( int code, String reason, boolean remote ) {
+        // The codecodes are documented in class org.java_websocket.framing.CloseFrame
+        System.out.println( "Connection closed by " + ( remote ? "remote peer" : "us" ) );
+    }
+
+    @Override
+    public void onError( Exception ex ) {
+        ex.printStackTrace();
+        // if the error is fatal then onClose will be called additionally
+    }
+
+    public static void main( String[] args ) throws URISyntaxException {
+        Main c = new Main( new URI( "ws://localhost:8888" ), new Draft_10() ); // more about drafts here: http://github.com/TooTallNate/Java-WebSocket/wiki/Drafts
+        c.connect();
     }
 
 }
