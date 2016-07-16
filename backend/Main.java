@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 import java.lang.*;
 import java.math.*;
-import org.json.*;
+import org.json.simple.*;
 
 import card.*;
 import player.*;
