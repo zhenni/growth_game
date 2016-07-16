@@ -5,7 +5,6 @@ import java.util.*;
 import player.*;
 
 public class Develop extends Card {
-    protected int develop_value = 0;
 
     public int getDevelop_value() {
         return develop_value;
