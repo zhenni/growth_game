@@ -19,6 +19,7 @@ public class Card {
     protected int[] deltaTimes = new int[3];
 
     protected int develop_value = 0; // only for DevelopCard
+    protected int develop_type = -1; // only for DevelopCard, -1 for invalid
 
     protected int cardToPlayer = -2; // -2 for invalid, -1 for all, o.w. for the selected player
 
