@@ -246,6 +246,32 @@ public class Main extends WebSocketClient {
         Vector<Integer> ret = new Vector<Integer>();
         if(start == 0){
             start = 1;
+            for(int i = 0; i < 39; ++i){
+                cards[i].setProb(1);
+                cards[i].setHp(5);
+                cards[i].setAdd_develop_value(0);
+                cards[i].setTimes_develop_value(1);
+                for(int j = 0; j < 3; ++j){
+                    cards[i].getDeltaAdd()[j] = 0;
+                    cards[i].getDeltaTimes()[i] = 1;
+                }
+            }
+            cards[21].setAdd_develop_value(1);
+            cards[22].setAdd_develop_value(2);
+            cards[23].setAdd_develop_value(-1);
+            cards[24].setAdd_develop_value(-2);
+            cards[27].getDeltaAdd()[0] = 1;
+            cards[28].getDeltaAdd()[0] = 2;
+            cards[31].getDeltaAdd()[1] = -1;
+            cards[32].getDeltaAdd()[1] = -2;
+            cards[33].getDeltaAdd()[1] = 1;
+            cards[35].getDeltaAdd()[2] = 1;
+            cards[36].getDeltaAdd()[2] = 2;
+            cards[29].getDeltaTimes()[0] = 2;
+            cards[30].getDeltaTimes()[0] = -1;
+            cards[34].getDeltaTimes()[1] = -1;
+            cards[37].getDeltaTimes()[2] = 2;
+            cards[38].getDeltaTimes()[2] = -1;
             for(int i = 0; i < 4; ++i){
                 for(int j = 0; j < 4; ++j){
                     addCard(i);
