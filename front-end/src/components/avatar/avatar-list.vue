@@ -13,7 +13,7 @@
   }
 
   li {
-    margin: 40px;
+    margin: 10px;
   }
 </style>
 

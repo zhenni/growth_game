@@ -13,7 +13,7 @@
   }
 
   .card-list li {
-    // margin: 40px;
+    margin:25px;
     float: left;
   }
 </style>

@@ -49,7 +49,7 @@
 
 <style lang="less">
   @border-color: #000;
-  @avatar-img-size: 200px;
+  @avatar-img-size: 100px;
   @avatar-icon-size: 40px;
   @icon-offset: @avatar-icon-size / 2;
 
@@ -70,7 +70,12 @@
     display: inline-block;
     position: relative;
     border-radius: 5px;
-    marign: 20px;
+    marign: 25px;
+  }
+
+  .big{
+    height:150px;
+    width:150px;
   }
 
   .avatar-hand-card-number {
