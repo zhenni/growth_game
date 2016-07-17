@@ -2,13 +2,14 @@
   <!-- <h1>front-end</h1>
   <p>A vue project.</p> -->
   <!-- <avatar-list :self="0"></avatar-list> -->
-  <div class="layout-total">
+  <div class="layout-total" :load="emitInit()">
     <div class="layout-mainPlayArea">
       <div class="layout-otherPlayer">
         <avatar-list :self="0" :my-avatar="false"></card-list>
       </div>
       <div class="layout-battleArea">
         <div class="layout-stageArea">
+          {{stage}}
         </div>
         <div class="layout-linkArea">
           <card-list></card-list>
@@ -31,18 +32,54 @@
   import CardList from './components/card/card-list.vue';
   import io from 'socket.io-client';
 
-  const socket = io('http://localhost:3000/game-room');
-  socket.on('news', (data) => {
-    console.log(data);
-    socket.emit('my other event', { my: 'data' });
-  });
+  // const socket = ;
+  // var stage1 = '等待其他玩家接入';
+
+  // socket.on('init', (data) => {
+  //   // console.log()
+  //
+  // });
 
   export default {
     name: 'app',
     data() {
       return {
-        socket: socket
+        socket: io('http://localhost:3000/game-room'),
+        stage: '等待开始游戏',
+        playerId: 3,
+        roundCounter: 0,  // 回合数
+        timesCounter: 0 // 轮数
       };
+    },
+    computed: {
+
+    },
+    methods: {
+      uploadStage: function(stage) {
+        this.stage = stage;
+      },
+      initStage: function() {
+        this.stage = '等待其他用户';
+      },
+      emitInit: function() {
+        // this.socket = ;
+        console.log('hello13');
+        // this.socket.manager('connect', (data) => {
+        //   this.uploadStage('开始游戏');
+        //
+        // })
+        // socket.emit('hello', message);
+        this.socket.on('init', (data) => {
+          // socket.emit('my other event', { my: 'data' });
+          this.uploadStage('开始游戏');
+//
+          console.log('hello');
+          this.roundCounter++;
+          if (this.roundCounter % 4 === 1) {
+
+          }
+        });
+      }
     },
     components: {
       AvatarList,
