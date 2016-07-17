@@ -38,8 +38,8 @@
 
 <style lang="less">
   @border-color: #000;
-  @card-height: 200px;
-  @card-width: 150px;
+  @card-height: 175px;
+  @card-width: 120px;
   @card-name-height: 60px;
   @card-cost-size: 20px;
   @offset: 3px;
@@ -77,7 +77,9 @@
   }
 
   .card-description {
-    //position: absolute;
+    position: absolute;
+    top: 50px;
+    left:@offset;
   }
 
   .card-cost-hp {
