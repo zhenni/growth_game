@@ -175,97 +175,128 @@
   };
 </script>
 <style lang="less">
-  @color: #aaa;
-  html, body {
-    background: @color;
-    box-sizing: border-box;
-    height: 100%;
-  }
-
-  *,
-  *:before,
-  *:after {
-    box-sizing: inherit;
-    padding: 0;
-    margin: 0;
-  }
-
-  .layout-total{
-    height: 100%;
-    background-color:grey;
-    margin:none;
-  }
-
-  .layout-mainPlayArea
-  {
-    height:66%;
-    width:90%;
-    position:relative;
-    top:2%;
-    left:5%;
-    background-color:red;
-    margin:0px 0px 0px 0px;
-  }
-
-  .layout-footArea
-  {
-    height:33%;
-    width:90%;
-    position: relative;
-    left:5%;
-    top:0%;
-    background-color:blue;
-  }
-
-  .layout-myPicture{
-    height:90%;
-    width:18%;
-    position: relative;
-    left:2%;
-    top:5%;
-    background-color:pink;
-  }
-
-  .layout-otherPlayer{
-    height:90%;
-    width:18%;
+@color: #aaa;
+html, body {
+  background: @color;
+  box-sizing: border-box;
+  height: 100%;
+}
+*,
+*:before,
+*:after {
+  box-sizing: inherit;
+  padding: 0;
+  margin: 0;
+}
+html, body,div{
+  height: 100%;
+  overflow-x:hidden;
+  overflow-y:hidden;
+}
+.layout-total{
+  height:620px;
+  width:1300px;
+  margin: auto;
+  position: absolute;
+  top:0;left:0;bottom:0;right: 0;
+  background-color:grey;
+}
+.layout-mainPlayArea
+{
+  height:375px;
+  width:1300px;
+  margin: auto;
+  position: absolute;
+  top:0; left: 0; bottom:200px; right: 0;
+  background-color:red;
+}
+.layout-footArea
+{
+  height:200px;
+  width:1300px;
+  margin: auto;
     position: absolute;
-    left:2%;
-    top:5%;
-    background-color:white;
-  }
+    top:400px; left: 0; bottom:0; right: 0;
+  background-color:blue;
+}
+.layout-myPicture{
+  height:200px;
+  width:200px;
+  margin: auto;
+  position: absolute;
+  text-align:center;
+  top:10px; left: 0px; bottom:10px; right:1050px;
+  background-color:pink;
+  padding-top:10px;
+}
+.layout-otherPlayer{
+  height:350px;
+  width:150px;
+  margin: auto;
+  position: absolute;
+  text-align:center;
+  top:10px; left: 0px; bottom:10px; right:1050px;
+  background-color:white;
+}
+.layout-battleArea{
+  height:350px;
+  width:1000px;
+  margin: auto;
+  position: absolute;
+  top:10px; left:225px; bottom:10px; right:0px;
+  background-color:black;
+}
+.layout-stageArea{
+  height:75px;
+  line-height:60px;
+  width:950px;
+  margin: auto;
+  text-align:center;
+  position: absolute;
+  top:0px; left:0px; bottom:250px; right:0px;
+  background-color:purple;
+}
+.layout-chainArea{
+  height:250px;
+  width:950px;
+  text-align:center;
+    margin: auto;
+    position: absolute;
+    top:50px; left:0px; bottom:0px; right:0px;
+  background-color:yellow;
+}
+.layout-cardArea{
+  height:200px;
+  width:1000px;
+  margin: auto;
+  text-align:center;
+  padding-left:50px;
+  padding-right:50px;
+  position: absolute;
+  top:0px; left:225px; bottom:0px; right:0px;
+  background-color:green;
+}
+.layout-giveUpButton{
+  height:40px;
+  width:100px;
+  position:absolute;
+  bottom:20px; right:20px;
+  background-color:orange;
+  color: #fff;
+  border:2px solid;
+  border-radius:25px;
+  outline: 0 none;
+}
+.layout-giveUpButton{
+  height:40px;
+  width:100px;
+  position:absolute;
+  bottom:10px; right:20px;
+  background-color:orange;
+  color: #fff;
+  border:2px solid;
+  border-radius:25px;
+  outline: 0 none;
+}
 
-  .layout-battleArea{
-    height:90%;
-    width:75%;
-    margin-left:22%;
-    position:absolute;
-    top:5%;
-    background-color:black;
-  }
-
-  .layout-stageArea{
-    height:20%;
-    width:100%;
-    position:absolute;
-    top:0px;
-    background-color:purple;
-  }
-
-  .layout-linkArea{
-    height:80%;
-    width:100%;
-    position:absolute;
-    bottom:0px;
-    background-color:green;
-  }
-
-  .layout-cardArea{
-    height:90%;
-    width:75%;
-    margin-left:22%;
-    position:absolute;
-    top:5%;
-    background-color:yellow;
-  }
 </style>
