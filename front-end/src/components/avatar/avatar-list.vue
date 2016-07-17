@@ -7,14 +7,13 @@
 </template>
 
 <style lang="less">
-  .other-player-list {
-    list-style: none;
-    position: relative;
-  }
-
-  li {
-    margin: 40px;
-  }
+.other-player-list {
+  list-style: none;
+  position: relative;
+}
+li {
+  margin: 10px;
+}
 </style>
 
 <script type="text/javascript">

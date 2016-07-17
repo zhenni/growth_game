@@ -55,48 +55,48 @@
 </script>
 
 <style lang="less">
-  @border-color: #000;
-  @avatar-img-size: 200px;
-  @avatar-icon-size: 40px;
-  @icon-offset: @avatar-icon-size / 2;
+@border-color: #000;
+@avatar-img-size: 100px;
+@avatar-icon-size: 40px;
+@icon-offset: @avatar-icon-size / 2;
+.avatar-icon-params() {
+  height: @avatar-icon-size;
+  width: @avatar-icon-size;
+  display: inline-block;
+  position: absolute;
+  background: red;
+  line-height: @avatar-icon-size;
+  text-align: center;
+}
+.avatar-img {
+  border: 1px solid @border-color;
+  height: @avatar-img-size;
+  width: @avatar-img-size;
+  display: inline-block;
+  position: relative;
+  border-radius: 5px;
+  marign: 25px;
+}
+.big{
+  height:150px;
+  width:150px;
+}
+.avatar-hand-card-number {
+  .avatar-icon-params();
+  right: -@icon-offset;
+  top: -@icon-offset;
+}
+.avatar-hp {
+  .avatar-icon-params();
+  bottom: -@icon-offset;
+  left: -@icon-offset;
+  border-radius: 100%;
+}
+.avatar-gp {
+  .avatar-icon-params();
+  bottom: -@icon-offset;
+  right: -@icon-offset;
+}
 
-  .avatar-icon-params() {
-    height: @avatar-icon-size;
-    width: @avatar-icon-size;
-    display: inline-block;
-    position: absolute;
-    background: red;
-    line-height: @avatar-icon-size;
-    text-align: center;
-  }
-
-  .avatar-img {
-    border: 1px solid @border-color;
-    height: @avatar-img-size;
-    width: @avatar-img-size;
-    display: inline-block;
-    position: relative;
-    border-radius: 5px;
-    marign: 20px;
-  }
-
-  .avatar-hand-card-number {
-    .avatar-icon-params();
-    right: -@icon-offset;
-    top: -@icon-offset;
-  }
-
-  .avatar-hp {
-    .avatar-icon-params();
-    bottom: -@icon-offset;
-    left: -@icon-offset;
-    border-radius: 100%;
-  }
-
-  .avatar-gp {
-    .avatar-icon-params();
-    bottom: -@icon-offset;
-    right: -@icon-offset;
-  }
 
 </style>
