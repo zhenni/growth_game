@@ -24,7 +24,16 @@ import org.java_websocket.handshake.ServerHandshake;
 
 public class Main extends WebSocketClient {
 
-    
+    int start = 0;
+    int waitP, waitOp;
+    int turnBeginner = 0;
+    Card[] cards = new Card[40];
+    Integer[] involve = new Integer[10];
+    Integer[][] add = new Integer[10][40];
+    Integer develop;
+    Player[] players = new Player[10];
+    Integer[] que = new Integer[100]; // -1 or 0-38
+    Integer f;
 
     public Main(URI serverUri, Draft draft) {
         super(serverUri, draft);
@@ -54,8 +63,22 @@ public class Main extends WebSocketClient {
     public void onMessage(String message) {
         System.out.println("received: " + message);
 
+        String op =  null;
         try {
-            int res = Integer.parseInt(message);
+            JSONParser parser = new JSONParser();
+            JSONObject json = (JSONObject) parser.parse(message);
+
+            op = (String) json.get("operator");
+
+            // Check
+            System.out.println( "op: " + op );
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            int res = Integer.parseInt(op);
         } catch (NumberFormatException e){
             e.printStackTrace();
         }
@@ -77,18 +100,21 @@ public class Main extends WebSocketClient {
 
         JSONObject content_obj = new JSONObject();
 
-        Vector<Vector<Integer>> cardInHand = new Vector<Vector<Integer>>();
+        Vector<String> cardInHand = new Vector<String>();
         Vector<Integer> hp = new Vector<Integer>();
         Vector<Integer> gp = new Vector<Integer>();
 
         int num_player = 4;
 
         for(int i = 0; i < num_player; ++i){
-            Vector<Integer> cards = new Vector<Integer>();
-            for(int j = 0; j < 10; ++j){
-                cards.add(info.elementAt(i*10+j));
+            Vector<String> cards = new Vector<String>();
+            for(int j = 0; j < 5; ++j){
+                JSONObject card_obj = new JSONObject();
+                card_obj.put("cardId", info.elementAt(i*10+j*2));
+                card_obj.put("status", info.elementAt(i*10+j*2+1));
+                cards.add(card_obj.toString());
             }
-            cardInHand.add(cards);
+            cardInHand.add(cards.toString());
             hp.add(info.elementAt(40+i));
             gp.add(info.elementAt(44+i));
         }
@@ -155,4 +181,200 @@ public class Main extends WebSocketClient {
         obj.put("type", "error");
         return obj.toJSONString();
     }
+/*
+    public ArrayList<Card> get_all_cards(){
+        ArrayList<Card>cards = new ArrayList<Card>();
+
+        ArrayList<String> dev_names = new ArrayList<String>();
+        for(int i = 0; i < 5; ++i){
+
+            for (int score = 1; score < 5; ++score){
+
+            }
+        }
+    }
+*/
+
+    int getCard() {
+        double tmp = Math.random();
+        double tot  = 0;
+        for(int i = 0; i < 39; ++i){
+            tot += cards[i].getProb();
+        }
+        tmp *= tot;
+        for(int i = 0;i  < 39; ++i){
+            if(tmp < cards[i].getProb()) return i;
+            tmp -= cards[i].getProb();
+        }
+        return 0;
+    }
+    void addCard(int i){
+        if(players[i].getCards().size() >= 5) return;
+        players[i].getCards().add(getCard());
+    }
+
+    int canPost(int people, int cardNumber) {
+        if(people != waitP) return 0;
+        if(f == 0 && cardNumber < 20) return 1;
+        if(f == 0) return 0;
+        if(que[0] != -1 && f < 4) {
+            if(cardNumber < 20 && cardNumber / 4 == que[0] / 4) return 1;
+            return 0;
+        }
+        if (cardNumber < 20) return 0;
+        return 1;
+    }
+
+    int getClear() {
+        if(f == 0) return 1;
+        if(f < 5) return 0;
+        if(que[0] == -1) {
+            if(f % 4 == 1) {
+                if(que[f - 1] == -1 && que[f - 2] == -1 && que[f - 3] == -1 && que[f - 4] == -1)
+                    return 1;
+            }
+        } else {
+            if(f % 4 == 0) {
+                if(que[f - 1] == -1 && que[f - 2] == -1 && que[f - 3] == -1 && que[f - 4] == -1)
+                    return 1;
+            }
+        }
+        return 0;
+    }
+
+    Vector<Integer> playgame(int choose) {
+        Vector<Integer> ret = new Vector<Integer>();
+        if(start == 0){
+            start = 1;
+            for(int i = 0; i < 4; ++i){
+                for(int j = 0; j < 4; ++j){
+                    addCard(i);
+                }
+            }
+            waitP = 0;
+            waitOp = 0;
+            turnBeginner = 0;
+            f = 0;
+            for(int i = 0; i < 4; ++i){
+                for(int j = 0; j < 5; j++){
+                    if (j < players[i].getCards().size()) {
+                        int x = players[i].getCards().get(j);
+                        ret.add(x);
+                        ret.add(canPost(i, x));
+                    } else {
+                        ret.add(-1);
+                        ret.add(-1);
+                    }
+                }
+            }
+            for(int i = 0; i < 4; ++i){
+                ret.add(players[i].getHp());
+            }
+            for(int i = 0; i < 4; ++i) {
+                ret.add(players[i].getGp());
+            }
+            ret.add(waitP);
+            ret.add(waitOp);
+            ret.add(getClear());
+            return ret;
+        }
+        if (waitOp == 0) {
+            int nowNumber = -1;
+            if (choose != -1) {
+                nowNumber = players[waitP].getCards().elementAt(choose);
+                players[waitP].setHp(players[waitP].getHp() + cards[nowNumber].getHp());
+                {
+                    Vector<Integer> tmp = new Vector<Integer>();
+                    tmp.clear();
+                    for(int i = 0; i < players[waitP].getCards().size(); i++) {
+                        if (i != choose) tmp.add(players[waitP].getCards().get(i));
+                    }
+                    players[waitP].getCards().clear();
+                    for(int i = 0; i < tmp.size(); i++) {
+                        players[waitP].getCards().add(tmp.get(i));
+                    }
+                }
+            }
+            que[f++] = nowNumber;
+            if (f == 1 && choose != -1) {
+                develop = nowNumber % 4 + 1;
+                involve[waitP] = 1;
+            }
+            if (que[0] != -1 && f <= 4 && choose != -1) {
+                involve[waitP] = 1;
+            }
+            if (waitOp == 0 && que[f - 1] >= 20 && que[f - 1] <= 26) {
+                if (que[f - 1] == 20) {
+                    for (int i = 0; i < 4; ++i) {
+                        for (int j = 0; j < 3; ++j) add[i][j] *= -1;
+                    }
+                    develop *= -1;
+                } else {
+                    develop += cards[que[f - 1]].getAdd_develop_value();
+                    develop *= cards[que[f - 1]].getTimes_develop_value();
+                }
+            }
+        }
+        if (waitOp == 1 && que[f - 1] >= 27) {
+            for(int i = 0; i < 3; ++i){
+                add[waitP][i] += cards[que[f - 1]].getDeltaAdd()[i];
+                add[waitP][i] *= cards[que[f - 1]].getDeltaTimes()[i];
+            }
+        }
+
+        if (waitP == turnBeginner && que[0] == -1 && f == 1) {
+            ;
+        } else {
+            if (waitOp == 0 && que[f - 1] >= 27) waitOp = 1;
+            else {
+                waitOp = 0;
+                waitP = (waitP + 1) % 4;
+            }
+        }
+        if(getClear() > 0) {
+            f = 0;
+            for (int i = 0; i < 4; ++i){
+                if(involve[i] != 0)
+                    players[i].setGp(players[i].getGp() + develop);
+                players[i].setHp(players[i].getHp() + add[i][0] - add[i][2]);
+                players[i].setGp(players[i].getGp() + add[i][1] + add[i][2]);
+                add[i][0] = 0;
+                add[i][1] = 0;
+                add[i][2] = 0;
+                involve[i] = 0;
+            }
+            develop = 0;
+            turnBeginner = (turnBeginner + 1) % 4;
+            waitP = turnBeginner;
+            waitOp = 0;
+            for(int i = 0; i < 4; ++i) {
+                addCard(i);
+            }
+        }
+        {
+            for(int i = 0; i < 4; ++i){
+                for(int j = 0; j < 5; j++){
+                    if (j < players[i].getCards().size()) {
+                        int x = players[i].getCards().get(j);
+                        ret.add(x);
+                        ret.add(canPost(i, x));
+                    } else {
+                        ret.add(-1);
+                        ret.add(-1);
+                    }
+                }
+            }
+            for(int i = 0; i < 4; ++i){
+                ret.add(players[i].getHp());
+            }
+            for(int i = 0; i < 4; ++i) {
+                ret.add(players[i].getGp());
+            }
+            ret.add(waitP);
+            ret.add(waitOp);
+            ret.add(getClear());
+        }
+        return ret;
+    }
+
 }

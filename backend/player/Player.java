@@ -13,17 +13,17 @@ public class Player{
     protected final int ID;
     protected int hp = 0; // health
     protected int gp = 0; // growth
-    protected Vector<Card> cards;
+    protected Vector<Integer> cards;
 
     public Player(){
-        cards = new Vector<Card>();
+        cards = new Vector<Integer>();
         ID = playerNum++;
     }
 
     public Player(int hp, int gp){
         this.hp = hp;
         this.gp = gp;
-        cards = new Vector<Card>();
+        cards = new Vector<Integer>();
         ID = playerNum++;
     }
 
@@ -57,7 +57,7 @@ public class Player{
         return gp;
     }
 
-    public Vector<Card> getCards() {
+    public Vector<Integer> getCards() {
         return cards;
     }
 
@@ -69,7 +69,7 @@ public class Player{
         this.hp = hp;
     }
 
-    public boolean addCard(Card newcard){
+    public boolean addCard(Integer newcard){
         if (cards.size() > MAX_NUM_CARDS) return false;
         cards.add(newcard);
         return true;
