@@ -16,6 +16,7 @@ public class Card {
 
     protected String name;
     protected String description;
+    protected String cardtype;
 
     protected int hp; // Decrease hp value of the player
     protected int[] deltaAdd = new int[3];  // [0] for hp, [1] for gp, [2] for minus hp add gp
@@ -92,6 +93,14 @@ public class Card {
         return description;
     }
 
+    public String getCardtype() {
+        return cardtype;
+    }
+
+    public void setCardtype(String cardtype) {
+        this.cardtype = cardtype;
+    }
+
     public void setDescription(String description){
         this.description = this.description;
     }
@@ -112,11 +121,19 @@ public class Card {
         this.develop_value = develop_value;
     }
 
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
+
+    public void setTimes_develop_value(int times_develop_value) {
+        Times_develop_value = times_develop_value;
+    }
+
     public String generateJsonString() {
         JSONObject obj = new JSONObject();
 
-        obj.put("name", name);
-        obj.put("type", toString());
+        obj.put("name", getName());
+        obj.put("type", getCardtype());
         obj.put("description", getDiscription());
         obj.put("hpchange", 1);
         obj.put("gpchange", 1);
