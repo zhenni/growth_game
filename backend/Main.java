@@ -37,40 +37,93 @@ public class Main extends WebSocketClient {
 
     public Main(URI serverUri, Draft draft) {
         super(serverUri, draft);
+        for(int i = 0; i < 10; ++i) players[i] = new Player(100, 0);
+        for(int i = 0; i < 40; ++i) cards[i] = new Card();
     }
 
     public Main(URI serverURI) {
         super(serverURI);
+        for(int i = 0; i < 10; ++i) players[i] = new Player(100, 0);
+        for(int i = 0; i < 40; ++i) cards[i] = new Card();
     }
 
     @Override
     public void onOpen(ServerHandshake handshakedata) {
         System.out.println("opened connection");
-        // if you plan to refuse connection based on ip or httpfields overload: onWebsocketHandshakeReceivedAsClient
+// if you plan to refuse connection based on ip or httpfields overload: onWebsocketHandshakeReceivedAsClient
 
-        // initialize
-        //String card_messages;// = errorMessage();
-        //card_messages = get_card_message();
+// initialize
+//String card_messages;// = errorMessage();
+//card_messages = get_card_message();
+
+
+        for(int i = 0; i < 39; ++i){
+            cards[i].setProb(1);
+            cards[i].setHp(5);
+            cards[i].setAdd_develop_value(0);
+            cards[i].setTimes_develop_value(1);
+            for(int j = 0; j < 3; ++j){
+                cards[i].getDeltaAdd()[j] = 0;
+                cards[i].getDeltaTimes()[j] = 1;
+            }
+        }
+        cards[21].setAdd_develop_value(1);
+        cards[22].setAdd_develop_value(2);
+        cards[23].setAdd_develop_value(-1);
+        cards[24].setAdd_develop_value(-2);
+        cards[27].getDeltaAdd()[0] = 1;
+        cards[28].getDeltaAdd()[0] = 2;
+        cards[31].getDeltaAdd()[1] = -1;
+        cards[32].getDeltaAdd()[1] = -2;
+        cards[33].getDeltaAdd()[1] = 1;
+        cards[35].getDeltaAdd()[2] = 1;
+        cards[36].getDeltaAdd()[2] = 2;
+        cards[29].getDeltaTimes()[0] = 2;
+        cards[30].getDeltaTimes()[0] = -1;
+        cards[34].getDeltaTimes()[1] = -1;
+        cards[37].getDeltaTimes()[2] = 2;
+        cards[38].getDeltaTimes()[2] = -1;
+
+        for(int i = 0; i < 20; ++i) cards[i].setCardtype("Development");
+        for(int i = 20; i < 39; ++i) cards[i].setCardtype("Incident");
+
+        for(int i = 0;  i < 4;  ++i) cards[i].setName("Travel");
+        for(int i = 4;  i < 8;  ++i) cards[i].setName("Work");
+        for(int i = 8;  i < 12; ++i) cards[i].setName("Music");
+        for(int i = 12; i < 16; ++i) cards[i].setName("Learning");
+        for(int i = 16; i < 20; ++i) cards[i].setName("Play");
+
+        cards[20].setName("Reversion");
+
+        for(int i = 21; i < 39; ++i) cards[i].setName("Hello World");
+
 
         ArrayList<String> list = new ArrayList<String>();
-        list.add("a");
-        list.add("b");
+        for(int i = 0; i < 39; ++i) list.add(cards[i].generateJsonString());
 
-        send(list.toString());
+        // list.add("a");
+        // list.add("b");
+
+        JSONObject obj = new JSONObject();
+        obj.put("type", "message");
+        obj.put("content", list.toString());
+
+        send(obj.toString());
     }
 
     @Override
     public void onMessage(String message) {
         System.out.println("received: " + message);
 
-        String op =  null;
+        String op = null;
+        int res = -1;
         try {
             JSONParser parser = new JSONParser();
             JSONObject json = (JSONObject) parser.parse(message);
 
-            op = (String) json.get("operator");
+            op = ((Long) json.get("operator")).toString();
 
-            // Check
+// Check
             System.out.println( "op: " + op );
 
         } catch (ParseException e) {
@@ -78,23 +131,21 @@ public class Main extends WebSocketClient {
         }
 
         try {
-            int res = Integer.parseInt(op);
+            res = Integer.parseInt(op);
         } catch (NumberFormatException e){
             e.printStackTrace();
         }
 
-        // Take
+// Take
 
+        Vector<Integer> info = playgame(res);
+// Vector<Integer> info = new Vector<Integer>();
+// for(int i = 0; i < 51; ++i){
+//    info.add(i+100);
+// }
+// }
 
-        // get 51 integers
-
-        // Vector<int> info = get_info();
-        Vector<Integer> info = new Vector<Integer>();
-        for(int i = 0; i < 51; ++i){
-            info.add(i+100);
-        }
-
-        // make Json Package
+// make Json Package
         JSONObject obj = new JSONObject();
         obj.put("type", "message");
 
@@ -131,43 +182,43 @@ public class Main extends WebSocketClient {
         send(messageToSend);
 
 
-        /*
-        try {
-            JSONParser parser = new JSONParser();
-            JSONObject json = (JSONObject) parser.parse(message);
+/*
+try {
+JSONParser parser = new JSONParser();
+JSONObject json = (JSONObject) parser.parse(message);
 
-            String type = (String) json.get("type");
-            String content = (String) json.get("content");
+String type = (String) json.get("type");
+String content = (String) json.get("content");
 
-            // Check
-            System.out.println( "type: " + type );
-            System.out.println( "content: " + content);
+// Check
+System.out.println( "type: " + type );
+System.out.println( "content: " + content);
 
-            String messageToSend;
-            send(messageToSend);
+String messageToSend;
+send(messageToSend);
 
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        */
+} catch (ParseException e) {
+e.printStackTrace();
+}
+*/
     }
 
-    /*
-    @Override
-    public void onFragment( Framedata fragment ) {
-        System.out.println( "received fragment: " + new String( fragment.getPayloadData().array() ) );
-    }*/
+/*
+@Override
+public void onFragment( Framedata fragment ) {
+System.out.println( "received fragment: " + new String( fragment.getPayloadData().array() ) );
+}*/
 
     @Override
     public void onClose(int code, String reason, boolean remote) {
-        // The codecodes are documented in class org.java_websocket.framing.CloseFrame
+// The codecodes are documented in class org.java_websocket.framing.CloseFrame
         System.out.println("Connection closed by " + (remote ? "remote peer" : "us"));
     }
 
     @Override
     public void onError(Exception ex) {
         ex.printStackTrace();
-        // if the error is fatal then onClose will be called additionally
+// if the error is fatal then onClose will be called additionally
     }
 
     public static void main(String[] args) throws URISyntaxException {
@@ -182,17 +233,17 @@ public class Main extends WebSocketClient {
         return obj.toJSONString();
     }
 /*
-    public ArrayList<Card> get_all_cards(){
-        ArrayList<Card>cards = new ArrayList<Card>();
+public ArrayList<Card> get_all_cards(){
+ArrayList<Card>cards = new ArrayList<Card>();
 
-        ArrayList<String> dev_names = new ArrayList<String>();
-        for(int i = 0; i < 5; ++i){
+ArrayList<String> dev_names = new ArrayList<String>();
+for(int i = 0; i < 5; ++i){
 
-            for (int score = 1; score < 5; ++score){
+for (int score = 1; score < 5; ++score){
 
-            }
-        }
-    }
+}
+}
+}
 */
 
     int getCard() {
@@ -246,32 +297,8 @@ public class Main extends WebSocketClient {
         Vector<Integer> ret = new Vector<Integer>();
         if(start == 0){
             start = 1;
-            for(int i = 0; i < 39; ++i){
-                cards[i].setProb(1);
-                cards[i].setHp(5);
-                cards[i].setAdd_develop_value(0);
-                cards[i].setTimes_develop_value(1);
-                for(int j = 0; j < 3; ++j){
-                    cards[i].getDeltaAdd()[j] = 0;
-                    cards[i].getDeltaTimes()[i] = 1;
-                }
-            }
-            cards[21].setAdd_develop_value(1);
-            cards[22].setAdd_develop_value(2);
-            cards[23].setAdd_develop_value(-1);
-            cards[24].setAdd_develop_value(-2);
-            cards[27].getDeltaAdd()[0] = 1;
-            cards[28].getDeltaAdd()[0] = 2;
-            cards[31].getDeltaAdd()[1] = -1;
-            cards[32].getDeltaAdd()[1] = -2;
-            cards[33].getDeltaAdd()[1] = 1;
-            cards[35].getDeltaAdd()[2] = 1;
-            cards[36].getDeltaAdd()[2] = 2;
-            cards[29].getDeltaTimes()[0] = 2;
-            cards[30].getDeltaTimes()[0] = -1;
-            cards[34].getDeltaTimes()[1] = -1;
-            cards[37].getDeltaTimes()[2] = 2;
-            cards[38].getDeltaTimes()[2] = -1;
+
+
             for(int i = 0; i < 4; ++i){
                 for(int j = 0; j < 4; ++j){
                     addCard(i);
