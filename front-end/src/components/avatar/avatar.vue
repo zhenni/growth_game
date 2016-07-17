@@ -28,6 +28,13 @@
       };
     },
     methods: {
+      selectUser() {
+        if (this.userSelected) {
+          this.socket.emit('select', this.playerId);
+        } else {
+          return false;
+        }
+      },
       getUserInfo() {
         // 这里需要传输userId:
         // 发送: userId

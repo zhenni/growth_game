@@ -1,7 +1,7 @@
 <template lang="html">
   <ul class="card-list">
     <li v-for="card in cardList">
-      <card :card-id="card"></card>
+      <card :card-id="card" :card-in-hand="cardInHand" :need-use-card="needUseCard"></card>
     </li>
   </ul>
 </template>
@@ -21,14 +21,18 @@
 <script type="text/javascript">
   import Card from './card.vue';
   export default {
-    props: ['self'],
+    props: ['self', 'allCard', 'deskOrNot', 'cardInHand', 'cardDesk', 'needUseCard', 'socket'],
     components: {
       Card
     },
     computed: {
       cardList: function() {
         // 此处get cardList
-        return [1, 2, 3, 4];
+        if (this.deskOrNot) {
+          return this.cardDesk;
+        } else {
+          return this.cardInHand;
+        }
       }
     }
   };

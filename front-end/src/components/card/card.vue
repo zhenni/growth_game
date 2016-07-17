@@ -1,36 +1,51 @@
 <template lang="html">
   <div  v-if="show" class="card" @click="selectTheCard()">
     <span class="card-type">
-      养成
+      {{cardInfo.type}}
     </span>
     <div class="card-name">
-      夭寿啦
+      {{cardInfo.name}}
     </div>
     <div class="card-description">
-      喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵喵
+      {{cardInfo.description}}
     </div>
     <span class="card-cost-hp">
-      1
+      {{cardInfo.hp}}
     </span>
     <span class="card-cost-gp">
-      1
+      {{cardInfo.gp}}
     </span>
   </div>
 </template>
 
 <script type="text/javascript">
   export default {
-    props: ['cardId'],
+    props: ['cardId', 'cardInHand', 'needUseCard', 'cardList', 'socket'],
     data() {
       return {
         show: true
       };
     },
+    computed: {
+      canSelected: function() {
+        let status = this.cardInHand[this.cardId] === '1' ;
+        return this.needUseCard && status;
+      },
+      cardInfo: function() {
+        return this.cardList[this.cardInHand];
+      }
+    },
     methods: {
       selectTheCard() {
         // 发牌操作
-        this.show = false;
-        console.log(this.cardId);
+        if (this.canSelected) {
+          this.show = false;
+          console.log(this.cardId);
+          this.socket.emit('select', this.cardId);
+          return this.cardId;
+        } else {
+          return false;
+        }
       }
     }
   };
