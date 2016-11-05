@@ -105,7 +105,12 @@ public class Main extends WebSocketClient {
         // list.add("b");
 
         JSONObject obj = new JSONObject();
+<<<<<<< HEAD
+        obj.put("type", "backend-ready");
+        //obj.put("content", ": sjjs");
+=======
         obj.put("type", "message");
+>>>>>>> refs/remotes/origin/master
         obj.put("content", list.toString());
 
         send(obj.toString());

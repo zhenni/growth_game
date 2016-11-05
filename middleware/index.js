@@ -11,7 +11,11 @@ var playerIdList = [0, 1, 2, 3];
 var message = null;
 
 function findSocket(socketArr, elem) {
+<<<<<<< HEAD
+  for (i = 0; i < socketArr.length; i++) {
+=======
   for (let i = 0; i < socketArr.length; i++) {
+>>>>>>> refs/remotes/origin/master
     if (socketArr[i].id === elem) {
       return i;
     }
@@ -19,12 +23,70 @@ function findSocket(socketArr, elem) {
 }
 
 wss.on('connection', function(_ws) {
+<<<<<<< HEAD
+    ws = _ws;
+    ws.on('message', function(_message) {
+        console.log('received: %s\n', _message);
+        message = JSON.parse(_message);
+
+        type = message["type"];
+        if(type == "backend-ready"){
+            ws.send(JSON.stringify({operator: 1}));
+            //ws.send('{"type": "initialize"}');
+        }
+        else if (type == "message"){
+
+            clearDesk = message["clearDesk"];
+            nextPlayer = message["nextPlayer"];
+            op = message["nextOperator"];
+            content = message["content"];
+
+            if (clearDesk == 1){
+
+                // TODO: clear desk
+            }
+                // TODO : update the cards
+            console.log("receive operator: %d", op);
+
+            switch(op){
+                case 0:
+                    console.log("Player %d get a card", nextPlayer);
+                    break;
+                case 1:
+                    console.log("Getting card initialized");
+                    break;
+                case 2:
+                    console.log("Player %d choose one player to use the card", nextPlayer);
+                    break;
+                case 3:
+                    console.log("Player %d Developing", nextPlayer);
+                    break;
+                case 4:
+                    console.log("Player %d Incidents", nextPlayer);
+                    break;
+                case 5:
+                    console.log("This round ends");
+                    break;
+                default:
+                     console.log("error operator: %d", op);
+            }
+        }
+    //content = message["content"];
+    //console.log("receive content: %s", content);
+    });
+
+    //TODO : save the info of the cards
+
+
+  //ws.send('{"type": "initialize"}');
+=======
   ws = _ws;
   ws.on('message', function(_message) {
     // console.log('received: %s', message);
     message = JSON.parse(_message);
   });
   ws.send('{"type": "initialize"}');
+>>>>>>> refs/remotes/origin/master
 })
 
 server.listen(3000);
@@ -73,9 +135,16 @@ gameRoom.on('connection', function(socket){
     ws.send(JSON.stringify({operator: 1}));
   });
 
+<<<<<<< HEAD
+  socket.on('getCard', function(data) {
+    // TODO:此处从后端获得目前所有用户卡的数值
+    // var data = message;
+    /*
+=======
   socket.on('getCard', function() {
     // TODO:此处从后端获得目前所有用户卡的数值
     // var data = message;
+>>>>>>> refs/remotes/origin/master
     var data = {
       type: 'message',
       content: {
@@ -102,7 +171,11 @@ gameRoom.on('connection', function(socket){
           ]
         ]
       }
+<<<<<<< HEAD
+    }*/
+=======
     }
+>>>>>>> refs/remotes/origin/master
     var msg = data.content;
     socket.emit('getCardList', msg);
     if (playerId !== nextPlayer) {
@@ -120,7 +193,11 @@ gameRoom.on('connection', function(socket){
   socket.on('disconnect', function () {
     if (playerId !== null) {
       counter--;
+<<<<<<< HEAD
+      elemId = findSocket(socketArr, socket.id);
+=======
       let elemId = findSocket(socketArr, socket.id);
+>>>>>>> refs/remotes/origin/master
       socketArr.splice(elemId, 1);
       playerIdList.push(playerId);
       console.log('leave',playerId);
